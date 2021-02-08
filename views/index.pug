@@ -1,0 +1,41 @@
+doctype html
+html(lang='en')
+  head
+    base(href=base)
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, shrink-to-fit=no')
+    script(src="https://code.jquery.com/jquery-3.5.1.min.js")
+    link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js")
+    script(src="/test.js")
+    title AutoFi API Tester
+  body.container(style="padding-top:50px;")
+    .row
+      .col-md-12 
+        h4 CSV Upload Tester
+        h6 Please fill in a provider name and upload a csv to test this amazing system!
+        form
+          .form-group.col-sm-12
+            label Provider Name
+            input#providerName.form-control(type='text' placeholder='Carl Ngan')
+          .form-group.col-sm-12
+            input#vehicles(type="file")
+          #errMsg(style="color:red;")  
+          button#submitCsv(class="btn btn-primary" type="button") Submit
+      .col-md-12(style="padding-top:50px;")
+        h4 Example Files
+        h6 Feel free to use these examples files (download them, and then upload them) to test.
+        div
+          a(href="/Example1.csv") Example 1 - Long
+        div
+          a(href="/Example2.csv") Example 2 - Short    
+      .col-md-12(style="padding-top:50px;")
+        h4 Current Vehicles
+        h6 See what is currently in our database in memory...
+        #currentVehicles
+        button#refreshVehicles(class="btn btn-primary" type="button") Refresh
+              
+
+    
