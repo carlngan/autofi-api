@@ -42,6 +42,10 @@ GET - /vehicles -- gets a list of all vehicles currently in the database
 
 # Running the code
 
+Make a `.env` file
+
+You can reference an example using `/.env.sample`
+
 `yarn install`
 
 `yarn start dev` to auto restart server when there's code change
@@ -58,9 +62,21 @@ If you run into errors, the follow commands may help:
 
 `npm install --global --production windows-build-tools` on a bash or command prompt with administrator access (run as administrator)
 
-Set VCTargetsPath environment variable to C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140 of whatever your path to MS CPP is.
+Set VCTargetsPath environment variable to C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140 or whatever your path to MS CPP is.
 
-# Potential
+# Cases to consider
+
+If a vehicle is already in the system, and there's an update to it. The assumption is that is has the same VIN and UUID, and the update date is newer. If this is the case, then we will update the existing record. If the update date is older, then the record will be ignored.
+
+If a file other than a .csv is passed in, then it will return a 400. If it's using the UI, a error message will appear, and nothing will happen on the backend.
+
+If a large file is uploaded (several GB?) in theory multer should be able to handle it. Once it is succesfully uploaded, the connection between the api and client will be closed, and the api will start processing and adding to the database async.
+
+If the same exact file is uploaded twice, then only the first one will count because it has unique VIN and UUID(s). Subsequent uploads will be ignored.
+
+The current system can potentially hang when it runs out of memory, because it's using an in-memory store.
+
+# Taking it to the next level
 
 If we want to take this to the moon, we could add features such as:
 

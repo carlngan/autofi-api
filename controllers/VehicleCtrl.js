@@ -1,4 +1,5 @@
 const csv = require("csv-parser")
+const moment = require("moment")
 const fs = require("fs")
 
 const { FileHelper } = require("../helpers/FileHelper")
@@ -21,7 +22,6 @@ class VehicleCtrl {
         .pipe(csv())
         .on("data", async rawVehicle => {
           // add providerName to vehicle
-          console.log("rawVehicle", rawVehicle)
           rawVehicle.providerName = providerName
           // clean up the raw vehicle data
           await VehicleCtrl.processVehicle(rawVehicle)
@@ -47,13 +47,20 @@ class VehicleCtrl {
     try {
       const cleanVehicle = await VehicleCtrl.cleanData(rawVehicle)
       // check if vehicle already exists
-      const vehicleExists = await VehicleSvc.vehicleExists(
+      const existingVehicle = await VehicleSvc.vehicleExists(
         cleanVehicle.uuid,
         cleanVehicle.vin
       )
       // add to db if unique
-      if (!vehicleExists) {
+      if (!existingVehicle || !existingVehicle.uuid) {
         await VehicleSvc.addVehicle(cleanVehicle)
+      } else if (
+        moment(existingVehicle.updateDate).isBefore(
+          moment(cleanVehicle.updateDate)
+        )
+      ) {
+        // if update date is newer, then perform an update instead
+        await VehicleSvc.updateVehicle(cleanVehicle)
       }
     } catch (err) {
       // if it errors, for example on vin and uuid -- continue

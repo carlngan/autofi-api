@@ -7,7 +7,7 @@
     "start": "node ./bin/www",
     "dev": "./node_modules/.bin/nodemon /bin/www",
     "lint": "./node_modules/.bin/eslint ./**/*.js --fix",
-    "test": "./node_modules/mocha/bin/mocha tests/**/*.js --exit"
+    "test": "./node_modules/.bin/mocha tests/**/*.js --exit"
   },
   "dependencies": {
     "axios": "~0.21.1",
